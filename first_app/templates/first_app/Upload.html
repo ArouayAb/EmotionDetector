@@ -4,98 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Landing</title>
-    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link href="{% static 'first_app/css/style.css' %}" rel="stylesheet" type="text/css" />
+
     {% csrf_token %}
+    {% load static %}
 </head>
 <body>
-    <div class="container">
-        <div class="subContainer">
-            <div id="myDP" class="dropzone dropzone-default">
+    <div id="chart-container-id">
+
+        <div class="inner-drop-zone">
+            <div id="image-drop-zone" class="dropzone dropzone-default"
+                 data-url="{% url 'first_app:upload' %}"
+                 data-csrf="{{ csrf_token }}">
+
                 <div class="dropzone-msg dz-message needsclick">
                     <div class="dropzone-msg-title">
-                        Drop your ballz here: {{ name }}
+                        Drop your image here
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="subContainer">
-            <ul id="results" style="list-style: none; padding: 0">
-
-            </ul>
-        </div>
-    </div>
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol id="indicators" class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-      </ol>
-
-      <!-- Wrapper for slides -->
-      <div id="innerCarousel" class="carousel-inner">
-        <div class="item active">
-          <img src="https://cdn.pixabay.com/photo/2018/07/16/07/34/indian-3541337_1280.jpg" alt="Los Angeles">
-        </div>
-
-        <div class="item">
-          <img src="https://cdn.pixabay.com/photo/2017/01/14/10/56/people-1979261_1280.jpg" alt="Chicago">
-        </div>
-
-        <div class="item">
-          <img src="https://everythingisviral.com/wp-content/uploads/2021/01/gigachad-meme-1024x652.png" alt="New York">
-        </div>
-      </div>
-
-      <!-- Left and right controls -->
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a id="nextButton" class="right carousel-control" href="#myCarousel" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-        <span class="sr-only">Next</span>
-      </a>
     </div>
 
-    <script>
-        Dropzone.autoDiscover = false;
-        let drop_zone = new Dropzone("div#myDP", {
-            url: "{% url 'first_app:upload' %}",
-            autoProcessQueue: true,
-            method: "post",
-            headers: {'X-CSRFToken': "{{csrf_token}}"},
-            success: function (file, response) {
-                let output = JSON.parse(response);
+    <link  rel="stylesheet" href="{% static 'first_app/css/style.css' %}">
+    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-                $("#innerCarousel").append(`
-                        <div class="item">
-                            <img src="https://cdn.pixabay.com/photo/2017/01/14/10/56/people-1979261_1280.jpg" alt="Node">
-                        </div>
-                    `);
 
-                let index = parseInt(document.getElementById("indicators").lastElementChild.attributes.getNamedItem("data-slide-to").value, 10) + 1;
-                $("#indicators").append(`<li data-target="#myCarousel" data-slide-to="${index}"></li>`);
-
-                $.each(output["results"], function (name, val) {
-                    console.log(output);
-                })
-
-                document.getElementById('indicators').lastElementChild.click();
-                /*
-                for (const entry of output.results) {
-                    console.log(entry);
-                    $("#results").append(`<li>${entry[0]}: ${entry[1].toFixed(2) * 100}%</li>`);
-                }
-                */
-            }
-        });
-    </script>
+    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="module" src="{% static 'first_app/js/inference.js' %}"></script>
 </body>
 </html>

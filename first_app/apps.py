@@ -1,4 +1,3 @@
-import torch.cuda
 from django.apps import AppConfig
 from transformers import AutoFeatureExtractor, AutoModelForImageClassification
 

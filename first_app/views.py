@@ -8,6 +8,13 @@ from PIL import Image
 import numpy as np
 
 
+class AnalysisView(TemplateView):
+    template_name = "first_app/analysis.html"
+
+    def get(self, request, **kwargs):
+        return render(request, self.template_name, None)
+
+
 class LandingView(TemplateView):
     landing_page = "first_app/index.html"
 
@@ -24,10 +31,8 @@ class UploadView(TemplateView):
 
     def post(self, request, **kwargs):
         input_image = request.FILES["file"]
-        context = {}
         results = inference(input_image, FirstAppConfig.model, FirstAppConfig.extractor, FirstAppConfig.classes)
-        context["results"] = results
-        return HttpResponse(json.dumps(context))
+        return HttpResponse(json.dumps(results))
 
 
 def inference(image, model, extractor, classes):
@@ -40,17 +45,4 @@ def inference(image, model, extractor, classes):
     prediction_array = np.array(predictions.cpu().detach()).squeeze().tolist()
     zipped_array = zip(classes, prediction_array)
 
-    print(zipped_array)
-
-    empty = {}
-    for i in zipped_array:
-        empty[i[0]] = i[1]
-
-    a = sorted(empty.items(), key=lambda x: x[1], reverse=True)
-    a = a[:5]
-    total = sum([j for i, j in a])
-    a = [(i, j / total) for i, j in a]
-
-    # results = dict(a)
-
-    return a
+    return dict(zipped_array)
