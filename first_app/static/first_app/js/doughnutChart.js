@@ -5,7 +5,7 @@ export function drawChart(inference) {
             "Contempt",
             "Disgust",
             "Fear",
-            "Happy",
+            "Happiness",
             "Neutral",
             "Sadness",
             "Surprise"

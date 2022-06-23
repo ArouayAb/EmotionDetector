@@ -13,7 +13,7 @@ class FirstAppConfig(AppConfig):
         "Contempt",
         "Disgust",
         "Fear",
-        "Happy",
+        "Happiness",
         "Neutral",
         "Sadness",
         "Surprise"
